@@ -1,0 +1,7 @@
+<div class="navbar-wrapper">
+	<div id="nav" class="row wr-app-bar row-centered">
+		<a <%=inputTab%> href="../data/upload.jag" class="btn-action btn-lg" data-toggle="tooltip" data-placement="top" title="Input"><i class="fa fa-sign-in fa-fw "></i>Input</a>
+		<a <%=filterTab%> href="../data/filter.jag" class="btn-action btn-lg" data-toggle="tooltip" data-placement="top" title="Input"><i class="fa fa-filter fa-fw"></i>Filter</a>
+		<a <%=verifyTab%> href="../filter/verify.jag" class="btn-action btn-lg" data-toggle="tooltip" data-placement="top" title="Input"><i class="fa fa-check-circle-o fa-fw"></i>Verify</a>
+	</div>
+</div>

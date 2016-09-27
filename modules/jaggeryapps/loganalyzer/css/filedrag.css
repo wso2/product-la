@@ -1,0 +1,92 @@
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    max-width: 80%;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    padding: 0.625rem 1.25rem;
+    /* 10px 20px */
+}
+
+
+.inputfile:focus + label,
+.inputfile.has-focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+.inputfile + label * {
+    /* pointer-events: none; */
+    /* in case of FastClick lib use */
+}
+
+.inputfile + label svg {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    fill: currentColor;
+    margin-top: -0.25em;
+    /* 4px */
+    margin-right: 0.25em;
+    /* 4px */
+}
+
+/* style 4 */
+
+.inputfile-4 + label {
+    	color: #533565;
+}
+
+.inputfile-4:focus + label,
+.inputfile-4.has-focus + label,
+.inputfile-4 + label:hover {
+    	color:#6c5c76;
+
+}
+
+.inputfile-4 + label figure {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #533565;
+    display: block;
+    padding: 20px;
+    margin: 0 auto 10px;
+}
+
+.inputfile-4:focus + label figure,
+.inputfile-4.has-focus + label figure,
+.inputfile-4 + label:hover figure {
+background-color:#6c5c76;
+color:#6c5c76;
+}
+
+.inputfile-4 + label svg {
+    width: 100%;
+    height: 100%;
+    fill: #f1e5e6;
+}
+
+.dragndrop-text { background: url("sourcery-images/icn-upload-small.png") no-repeat 0 50%; padding: 10px 0 10px 35px; font-size: 0.89474em; color: #a8a8a8; float: left; margin: 0 20px 0 0; }
+.dragndrop-input { float: left; }
+    .dragndrop-input .inputfile-wrapper { background-color: #243c43; border-color: #243c43; font-weight: normal; }
+.dragndrop-attachments { background: white url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAQCAQAAABwiK17AAAAlElEQVR42mXHsQoBcQCA8a9sIhZsyqBuuRfwCt7AxjMYTZ7DA3xPgEzqsoobbqAb/qIsco9gOKRMv37Yc23m0QEA7hyCkVnZK6WZdcDwbmoD8G7HaVm3WBi7AlO7BrwZm4CHssHIBEw+7X5b/PX50ws+bJrbN7dhwABOXDoCL3iyBgC2PePchVWw5cYxVpy5N3XvCF4rmGc1YZZz/AAAAABJRU5ErkJggg==") no-repeat 20px 50%; padding: 0 20px 0 40px; margin: -20px 0 20px 0; border: solid 1px #eee; border-top: none; border-bottom: none; font-size: 0.73684em; }
+    .dragndrop-attachments .uploadimage-upload { float: left; margin: 0 20px 0 0; padding: 20px 0 20px 0; }
+    .dragndrop-attachments .uploadimage-progressbar { background: #30aed6; height: 2px; }
+    .dragndrop-attachments .uploadimage-progresscompleted .uploadimage-progressbar { height: 0; }
+
+.uploadimage-warning { background: #FFFD7C; padding: 10px; }
+.uploadimage-text { font-size: 32px; margin-bottom: 20px; }
+.uploadimage-input { margin: 20px 0; }
+.uploadimage-totalprogress { background: #999; }
+.uploadimage-totalprogressbar { background: #107EC2; height: 6px; }
+.uploadimage-progressbar { background: maroon; height: 2px; }

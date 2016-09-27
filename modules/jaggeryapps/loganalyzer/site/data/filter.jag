@@ -1,0 +1,224 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WSO2 Log Analyzer</title>
+    <link rel="icon" href="../../images/favicon.png" type="image/x-icon"/>
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/custom.css" rel="stylesheet">
+    <link href="../../css/breadcrumb.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/custom-theme.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="stylesheet">
+    <% include("../../includes/tenantAware.jag"); %>
+
+</head>
+
+<body>
+    <!-- header -->
+    <header>
+        <% include("../header/mainnav.jag");%>
+    </header>
+    <!-- /header -->
+
+    <!-- secondary header - app bar -->
+    <%
+var inputTab = "";
+var filterTab = "style='background-color:#000'";
+var verifyTab = "";
+include("../header/sourceconfiguratoinnav.jag");
+%>
+<!-- secondary header - app bar -->
+
+<!-- content/body -->
+<br class="spacer"/>
+<div class="row">
+    <div class="col-md-11">
+        <div style="padding-left:15%;">
+            <h4>Select an event from the sample</h4>
+            <p>Choose a source or source type, select a sample event, and click next to go to the next step.Field
+                extractor will use the selected event to extract fields
+            </p>
+        </div>
+    </div>
+</div>
+<br class="spacer"/>
+<div class="row">
+    <div class="col-md-2" style="margin-left: -12.5%"></div>
+    <div class="col-md-1" style="text-align: right; margin-left: 9%;">Selected Log Entry:</div>
+    <div class="col-md-7" id="selected-log-entry"></div>
+    <div class="col-md-1">
+        <button id="extract-btn" type="button" class="btn btn-primary" onclick="extractView()" style="display:none">
+            Extract
+        </button>
+    </div>
+</div>
+<br class="spacer"/>
+<div class="row" id="main_panel">
+    <div class="col-md-2"></div>
+    <div class="col-md-1" style="text-align: right; margin-left: 15%">Sample</div>
+    <div class="col-md-2">
+        <select class="form-control" onchange="searchActivities(this.value)">
+            <option value="10">10 Events</option>
+            <option value="100">100 Events</option>
+            <option value="1000">1000 Events</option>
+        </select>
+    </div>
+</div>
+<div class="row" id="regEx_panel"
+     style="padding-top: 5%; padding-left: 14.5%; padding-right: 12.5%; display: block;">
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active" style="width:50%">
+            <a href="#available_atterns" aria-controls="available_atterns" role="tab" data-toggle="tab">Available
+                Patterns
+            </a>
+        </li>
+        <li role="presentation" style="width:49.7195%">
+            <a id='tab-saved-patterns' href="#saved_patterns" aria-controls="saved_patterns" role="tab"
+               data-toggle="tab">Saved RegEx Patterns
+            </a>
+        </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content" style="border-style: solid; border-width: 0px 1px 1px 1px; border-color: #000">
+        <div role="tabpanel" class="tab-pane active" id="available_atterns">
+            <div class="row" style="margin-bottom: 3%">
+                <div class="col-md-1" style="text-align:center">Regex</div>
+                <div class="col-md-1">
+                    <button class="btn btn-primary" type="button" onclick="regexDev()">
+                        <img src="../../images/ico-function.png"/>
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <dev class="row">
+                        <dev class="col-md-10">
+                            <input type="text" class="form-control" id="regEx_input" placeholder="regex...">
+                        </dev>
+                        <dev class="col-md-1">
+                            <button class="btn btn-primary" type="button" id="saveReg">Save</button>
+                        </dev>
+                    </dev>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="saved_patterns">
+            <div class="row" style="margin-bottom: 1%">
+                <div class="col-md-2" style="text-align:right">RegEx Patterns</div>
+                <div class="col-md-4" style="text-align:center">
+                    <table class="table table-bordered" id="saved-regex-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="btn-group-actions" class="col-md-1" align="right" id="verify-reg-button">
+        <button class="btn btn-main" id="verifyConf">Next</button>
+    </div>
+</div>
+<br class="spacer"/>
+<div class="row" id="log_entry_panel">
+    <div class="col-md-2" style="margin-left: -12.5%"></div>
+    <div class="col-md-9 table-responsive" style="margin-left: 9.5%">
+        <table id="LogEntries">
+            <thead>
+                <tr>
+                    <th>Entry</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="reg-input-dialog" class="modal fade">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">RegEx Name:</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="regEx_name">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveRegB">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="extract_panel"
+     style="padding-top: 5%; padding-left: 15%; padding-right: 0%; display: block;">
+
+    <div class="col-md-1" style="margin-left: 23%">
+        <label class="input-label" style="margin-left: 60%">RegEx</label>
+        <button class="btn btn-primary" type="button" style="height:200px; width:200px" onclick="regexDev()">
+            <img src="../../images/ico-function.png"/>
+        </button>
+    </div
+
+</div>
+<div class="col-md-1" style="margin-left: 16%">
+    <label class="input-label" style="margin-left: 60%">Delimiter</label>
+    <button class="btn btn-primary" style="height:200px; width:200px" type="button" onclick="delDev()">
+        <img src="../../images/ico-delimeter.png"/>
+    </button>
+</div>
+</div>
+<div class="row" id="delimeter_panel"
+ style="padding-top: 5%; padding-left: 14.5%; padding-right: 12.5%; display: block;">
+<div class="col-md-1" style="text-align:center">Delimiter</div>
+<div class="col-md-1">
+    <button class="btn btn-primary" style="margin-bottom: 20%" type="button" onclick="delDev()">
+        <img src="../../images/ico-delimeter.png"/>
+    </button>
+</div>
+<div class="col-md-6">
+    <dev class="row">
+        <dev class="col-md-6">
+
+            <div class="btn-group">
+                <button class="btn" onclick="" id="del_space">Space</button>
+                <button class="btn" onclick="" id="del_comma">Comma</button>
+                <button class="btn" onclick="" id="del_tab">Tab</button>
+                <button class="btn" onclick="" id="del_pipe">Pipe</button>
+                <button class="btn" onclick="" id="del_other">Other</button>
+            </div>
+
+        </dev>
+        <dev class="col-md-2">
+            <input type="text" class="form-control" id="del_input">
+        </dev>
+    </dev>
+</div>
+<div class="btn-group-actions" class="col-md-1" style="margin-top: 10%; padding-left: 94.6%" id="verify-button">
+    <button class="btn btn-main" id="verifyDelConf">Next</button>
+</div>
+</div>
+
+<script src="../../js/mustache.min.js"></script>
+<script src="../../js/jquery-1.11.1.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/wso2.ml.util.js"></script>
+<script src="../../js/jquery.form.min.js"></script>
+<script src="../../js/highlightRegex.js"></script>
+<script src="../../js/das-regex-save.js"></script>
+<script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+<script src="../../js/highlightText.js"></script>
+<script src="../../js/filter.js"></script>
+</body>
+</html>

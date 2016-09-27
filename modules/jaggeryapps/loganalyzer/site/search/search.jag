@@ -1,0 +1,250 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WSO2 Log Analyzer</title>
+    <link rel="icon" href="../../images/favicon.png" type="image/x-icon" />
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/custom.css" rel="stylesheet">
+    <link href="../../css/custom-theme.css" rel="stylesheet">
+    <link href="../../css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet"/>
+    <link href="../../css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet"/>
+    <link href="../../css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet"/>
+    <link href="../../css/plugins/timepicker/jquery.timepicker.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+    <% include("../../includes/tenantAware.jag"); %>
+
+</head>
+
+<body>
+
+    <div class="container col-lg-12 col-md-12 col-sm-12">
+        <header>
+            <div class="row wr-global-header">
+                <div class="col-sm-8 app-logo">
+                    <a href="../home/home.jag"><img src="../../images/logo.png" /><h2 class="app-title">Log Analyzer</h2></a>
+                </div>
+                <div class="col-sm-4">
+                    <div class="wr-auth pull-right">
+                        <a href="#" data-toggle="dropdown" class="cu-ico-right-button cu-ico-button-user"><% print(session.get("logged.user")); %></a>
+                        <div class="dropdown-menu">
+                            <div class="cu-arrow"></div>
+                            <div class="dropdown-menu-content">
+                                <a href="../logout/logout.jag" id="log-out" class="filter-item">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- secondary header - app bar -->
+        <div class="navbar-wrapper">
+            <div id="nav" class="row wr-app-bar">
+                <div class="col-md-9 wr-action-container">
+
+                    <div class="wr-asset-type-switcher">
+                        <a href="#" class="ctrl-asset-type-switcher" data-placement="bottom" data-trigger="focus">
+                        <!--a href="#" class="ctrl-asset-type-switcher" data-placement="bottom" data-trigger="focus"-->
+                        <span class="btn-asset"></span>
+                        </a>
+                    </div>
+
+                    <div class="wr-project">
+                        <a class="title" >Search</a>
+                    </div>
+                     <div class="wr-project">
+                        <a class="link" id="alert-link" onclick="alertPage()">Alert</a>
+                    </div>
+                    <div class="wr-project">
+                        <a  class="link" id="visualize-link">Visualization</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- secondary header - app bar -->
+
+        <!-- content/body -->
+        <div class="row">
+            <div class="col-lg-12 wr-secondary-bar">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <!-- content -->
+                <div class="container col-md-12 col-centered wr-content">
+
+                    <div class="wrapper">
+                        <div class="left-panel">
+                            <h1 class="title">Fields</h1>
+                            <h2 class="sub-title">Selected Fields</h2>
+                            <ul class="list-unstyled">
+                               <li>host</li>
+                               <li>source</li>
+                               <li>source-type</li>
+                            </ul>
+                            <h2 class="sub-title">Interesting Fields</h2>
+                            <ul class="list-unstyled">
+                               <li>line-count</li>
+                               <li>date-hour</li>
+                               <li>date-second</li>
+                               <li>date-year</li>
+                               <li>user-field</li>
+                            </ul>
+                        </div>
+                        <div class="right-panel">
+                            <div id="search-field-area" class="search-field text">
+                                <input type="text" value="" placeholder="host='localhost' status='success'" id="search-field" name="search-field" />
+                            </div>
+                            <div id="drop-down-area" class="search-field text">
+                                <button type="button" class="btn btn-main" id="date-time-select" data-placement="bottom" rel="popover"
+                                data-original-title="All Time">All Time</button>
+                            </div>
+
+                            <div class="panel-group" id="timeListContent" style="display: none">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#timeListContent" href="#pre-defined">Pre-defined Sets</a>
+                                        </h4>
+                                    </div>
+                                    <div id="pre-defined" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <ul class="list-unstyled">
+                                                <li id="all-time" onclick="changeTime(this.innerHTML, 0, new Date(8640000000000000).getTime())">All Time</li>
+                                                <li id="today" onclick="changeTime(this.innerHTML, new Date().setHours(0,0,0,0),
+                                                        new Date().setHours(24,0,0,0))">Today</li>
+                                                <li value="week-to-date" onclick="changeTime(this.innerHTML, getLastWeek().getTime(), Date.now())">Week to Date</li>
+                                                <li value="month-to-date" onclick="changeTime(this.innerHTML, getLastMonth().getTime(), Date.now())">Month to Date</li>
+                                                <li value="last-15-minutes" onclick="changeTime(this.innerHTML, Date.now() - 15*60000, Date.now())">Last 15 Minutes</li>
+                                                <li value="last-hour" onclick="changeTime(this.innerHTML, Date.now() - 60*60000, Date.now())">Last 1 Hour</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#timeListContent" href="#date-range">Date Range</a>
+                                        </h4>
+                                    </div>
+                                    <div id="date-range" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <div>
+                                                <label>From: </label>
+                                                <input type="text" id="dateRangeDatePickerFrom" class="datepicker" placeholder="Start Date of event" />
+                                            </div>
+                                            <div>
+                                                <label>To: </label>
+                                                <input type="text" id="dateRangeDatePickerTo" class="datepicker" placeholder="End Date of event" />
+                                            </div>
+                                            <div>
+                                                <button type="button" class="btn btn-main" id="date-range-add-btn" onclick="assignDateRange()">Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                          <a data-toggle="collapse" data-parent="#timeListContent" href="#date-time-range">Date Time Range</a>
+                                        </h4>
+                                    </div>
+                                    <div id="date-time-range" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <div>
+                                                <label>From: </label>
+                                                <input type="text" id="dateTimeRangeDatePickerFrom" class="datepicker" placeholder="Start Date time of event" />
+                                                <input id="dateTimeRangeTimePickerFrom" class="timepicker" type="text" />
+                                            </div>
+                                            <div>
+                                                <label>To: </label>
+                                                <input type="text" id="dateTimeRangeDatePickerTo" class="datepicker" placeholder="End Date time of event" />
+                                                <input id="dateTimeRangeTimePickerTo" class="timepicker" type="text" />
+                                            </div>
+                                            <div>
+                                                <button type="button" class="btn btn-main" id="date-range-add-btn" onclick="assignDateTimeRange()">Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type="hidden" id="timestamp-from" value="0"/>
+                            <input type="hidden" id="timestamp-to" value="8640000000000000"/>
+
+                            <div id="search-btn-area" class="btn-group-actions">
+                                <button class="btn btn-main" id="search-btn" onclick="searchActivities()">Search</button>
+                            </div>
+                            <div id="visualize-btn-area" class="btn-group-actions">
+                                <button class="btn btn-main" id="visualize-btn" onclick="openDashboard()">Visualize</button>
+                            </div>
+                            <select id="save-options" class="drop-down-fixed">
+                                <option disabled="disabled" style="display: none" selected="selected">Save As</option>
+                                <optgroup label="Save As">
+                                    <option value="alert">Alert</option>
+                                </optgroup>
+                                <option disabled="disabled" style="display: none" >Download As</option>
+                                <optgroup label="Download As">
+                                    <option value="pdf">PDF</option>
+                                    <option value="csv">CSV</option>
+                                </optgroup>
+<<<<<<< HEAD
+                            </select>
+=======
+                                <option value="alert">Alert</option>
+                            </select><br>
+                            <p id="logpath" value="None"></p>
+                            <input type="hidden" id="facetPath" value="None">
+>>>>>>> ff1fc2b4919b90d18dab825b6ab81a4b3a55ab04
+
+                            <div id="logStreamData" class="logstreamTest">
+                                <label>Logstream</label>
+                                <select id="0" name="logstreamSelect1" onchange="addChildLogStream1(this.value,this.id)"><option value="None">All</option></select>
+                            </div>
+                            <p id="logTest"></p>
+                            <div  id="tab-preview" class="wr-form col-lg-12 col-left">
+                                <table id="results-table" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+		    </div>
+
+                <!-- /content -->
+            </div>
+        </div>
+        <!-- /content/body -->
+    </div>
+
+    <script src="../../js/jquery-2.1.1.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/plugins/jquery.dataTables.js"></script>
+    <script src="../../js/plugins/dataTables.bootstrap.js"></script>
+    <script src="../../js/plugins/dataTables.responsive.js"></script>
+    <script src="../../js/plugins/jquery.timepicker.js"></script>
+    <script src="../../js/plugins/jspdf/jspdf.js"></script>
+    <script src="../../js/plugins/jspdf/FileSaver.js"></script>
+    <script src="../../js/plugins/jspdf/standard_fonts_metrics.js"></script>
+    <script src="../../js/plugins/jspdf/split_text_to_size.js"></script>
+    <script src="../../js/plugins/jspdf/from_html.js"></script>
+    <script src="../../js/plugins/jspdf/cell.js"></script>
+    <!--script src="../../js/visualize.js"></script-->
+    <script src="search.js"></script>
+</body>
+
+</html>

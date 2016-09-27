@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LogAnalyzer>
+	<!-- JNDI name of the data source to be used by the Log Analyzer. This
+		data source should be defined in the master-datasources.xml file in conf/datasources 
+		directory. -->
+	<DataSourceName>jdbc/WSO2LA_DB</DataSourceName>
+
+	<!-- Configurations to calculate summary statistics from a dataset. histogramBins 
+		: Number of intervals in a histogram. categoricalThreshold : The maximum 
+		number of categories that can have in a non-string categorical feature. If 
+		exeeds, the feature will be treated as a numerical feature. sampleSize : 
+		Size of the dataset sample which will be used for summary statistics calculation 
+		and visualization. -->
+	<SummaryStatisticsSettings>
+		<HistogramBins>20</HistogramBins>
+		<CategoricalThreshold>10</CategoricalThreshold>
+		<SampleSize>10000</SampleSize>
+	</SummaryStatisticsSettings>
+
+	<!-- -->
+	<Properties>
+		<Property name="la.thread.pool.size" value="100" />
+		<Property name="file.in"
+			value="org.wso2.carbon.la.core.impl.FileInputAdapter" />
+		<Property name="file.out"
+			value="org.wso2.carbon.la.core.impl.FileOutputAdapter" />
+		<Property name="hdfs.in"
+			value="org.wso2.carbon.la.core.impl.HdfsInputAdapter" />
+		<Property name="hdfs.out"
+			value="org.wso2.carbon.la.core.impl.HdfsOutputAdapter" />
+		<Property name="das.in" value="org.wso2.carbon.la.core.impl.BAMInputAdapter" />
+		<Property name="registry.in"
+			value="org.wso2.carbon.la.core.impl.RegistryInputAdapter" />
+		<Property name="registry.out"
+			value="org.wso2.carbon.la.core.impl.RegistryOutputAdapter" />
+	</Properties>
+
+	<!-- Email address to which the model building status mails are sent. -->
+	<EmailNotificationEndpoint></EmailNotificationEndpoint>
+
+	<!-- Registry location where ML models are published. -->
+	<ModelRegistryLocation>ml</ModelRegistryLocation>
+
+	<!-- Optional element. This element should point to a HDFS location where 
+		LA is allowed to store files. -->
+	<HdfsURL>hdfs://localhost:9000</HdfsURL>
+	
+
+</LogAnalyzer>

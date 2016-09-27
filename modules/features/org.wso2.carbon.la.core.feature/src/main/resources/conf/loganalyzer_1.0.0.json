@@ -1,0 +1,10 @@
+{
+  "name": "loganalyzer",
+  "version": "1.0.0",
+  "payloadData": [
+    {
+      "name": "logstream",
+      "type": "STRING"
+    }
+  ]
+}
