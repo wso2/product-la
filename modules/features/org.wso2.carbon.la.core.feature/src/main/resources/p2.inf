@@ -1,0 +1,4 @@
+instructions.configure = \
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.la.core_${feature.version}/conf/log-analyzer.xml,target:${installFolder}/../../conf/log-analyzer.xml,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.la.core_${feature.version}/conf/loganalyzer_1.0.0.json,target:${installFolder}/../../deployment/server/eventstreams/loganalyzer_1.0.0.json,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.carbon.la.core_${feature.version}/conf/loganalyzer.xml,target:${installFolder}/../../deployment/server/eventsink/loganalyzer.xml,overwrite:true);\

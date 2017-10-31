@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../images/favicon.png" type="image/x-icon" />
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/custom.css" rel="stylesheet">
+    <link href="../../css/alert.css" rel="stylesheet">
+    <link href="../../css/custom-theme.css" rel="stylesheet">
+    <link href="../../css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet"/>
+    <link href="../../css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet"/>
+    <link href="../../css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet"/>
+    <link href="../../css/plugins/timepicker/jquery.timepicker.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+
+</head>
+
+<body>
+    <div class="inner-container">
+        <div class="sl-label"><label>Alert Name:</label></div>
+        <div class="input-control" id="fields"><input type="text" id="alert-name-txt" class="alert-name-txt"></div>
+        <div class="sl-label"><label>Description</label></div>
+        <div class="input-control" id="fields"><textarea rows="3" class=alert-des-txa" id="alert-des-txa"></textarea ></div>
+        <div class="sl-label"><label>Filter:</label></div>
+        <div class="input-control" id="fields"><input type="text" id="filter-txt" class="filter-text"></div>
+        <div class="sl-label"><label>Schedule</label></div>
+        <div class="input-control" id="fields">
+             <select class="sch-type" id="sch-type" onchange="loadContent()" >
+                <option value="0">Hourly</option>
+                <option value="1">Daily</option>
+                <option value="2">Weekly</option>
+                <option value="3">Monthly</option>
+                <option value="4">Cron Expression</option>
+            </select>
+        <div class="load-content" id="load-content"></div>
+        </div>
+        <div class="load-content1" id="load-content1" >
+            <div>
+                    <div class='load-label'><lable>From:</lable></div>
+                    <div class='load-input' id='load-field'>
+
+                        <label>Date:</label>
+                         <input type='text' id='fromRangeDatePicker' class='alert-datepicker' />
+                         <lable>Time:</lable>
+                        <input id='fromRangeTimePickerFrom' class='alert-timepicker' type='text' />
+
+                    </div>
+
+            </div>
+             <div>
+                    <div class='load-label'><lable>To:</lable></div>
+                    <div class='load-input' id='load-field'>
+                        <label>Date:</label>
+                         <input type='text' id='toRangeDatePicker' class='alert-datepicker' />
+                         <lable>Time:</lable>
+                        <input type='text' id='toRangeTimePicker' class='alert-timepicker' />
+
+                    </div>
+
+            </div>
+            <div>
+                    <div class='load-label'><lable>Cron Expression:</lable></div>
+                    <div class='load-input' id='load-field'>
+                         <input type='text' id='cron-exp' class='cron-exp' placeholder='*/5 * * * * *'/>
+                    </div>
+
+            </div>
+        </div>
+        <div class="sl-label"><label>Trigger</label></div>
+        <div class="input-control" id="fields">
+             <select class="trigger-type" id="trigger-type" onchange="" >
+                <option value="0">Base on Results</option>
+                 <option value="1">Base on Hosts</option>
+            </select>
+        </div>
+        <div class="compare" id="compare">
+             <select class="cond-type" id="cond-type" onchange="loadContent()" >
+                <option value="gt">greater than</option>
+                <option value="lt">less than</option>
+                <option value="eq">equal</option>
+                <option value="gteq">greater than or equal</option>
+                <option value="lteq">less than or equal</option>
+                <option value="nteq">not equal</option>
+
+            </select>
+         <input type="text" id="cmp-val" class="cmp-val" />
+        </div>
+
+        <button class="btn btn-main" id="alert-back-btn">Back</button>
+         <button class="btn btn-main" id="alert-save-btn">Save</button>
+    </div>
+
+    <script src="../../site/alert/schedule.js"></script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="LA-features-test-suite" parallel="false">
+    <parameter name="useDefaultListeners" value="false"/>
+
+    <test name="la-tests" preserve-order="true" parallel="false">
+        <packages>
+            <package name="org.wso2.carbon.la.integration.tests.alert"/>
+        </packages>
+    </test>
+</suite>

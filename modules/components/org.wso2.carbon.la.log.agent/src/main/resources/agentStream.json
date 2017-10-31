@@ -1,0 +1,16 @@
+{
+  "name": "org.wso2.sample.logs.group.1",
+  "version": "1.0.0",
+  "nickName": "Log_Stream",
+  "description": "Sample of logs",
+  "payloadData" : [
+    {
+      "name": "host",
+      "type": "STRING"
+    },
+    {
+      "name": "logMessage",
+      "type": "STRING"
+    }
+  ]
+}

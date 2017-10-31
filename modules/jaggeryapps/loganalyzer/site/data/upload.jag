@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WSO2 Log Analyzer</title>
+    <link rel="icon" href="../../images/favicon.png" type="image/x-icon" />    
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/custom.css" rel="stylesheet">
+    <link href="../../css/custom-theme.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/dropzone.min.css" rel="stylesheet">
+<script>(function(e,t,n){var r=e.querySelectorAll("html")[0];r.className=r.className.replace(/(^|\s)no-js(\s|$)/,"$1js$2")})(document,window,0);</script>
+    <% include("../../includes/tenantAware.jag"); %>
+</head>
+
+<body>
+
+<div class="container col-lg-12 col-md-12 col-sm-12">
+
+<!-- header -->
+<header>
+	<% include("../header/mainnav.jag");%>
+</header>
+<!-- /header -->
+
+<!-- secondary header - app bar -->
+	<%
+var inputTab = "style='background-color:#000'";
+var filterTab = "";
+var verifyTab = "";
+include("../header/sourceconfiguratoinnav.jag");
+%>
+<!-- secondary header - app bar -->
+
+<div class="row">
+<div class="col-md-12">
+<!-- content -->
+<div class="container col-md-12 col-centered wr-content">
+
+    <div id="notification-area"></div>
+    <div class="wr-form col-lg-5 col-centered">
+
+           <form id="add-log-form" method="POST">
+            <label class="input-label">Log Stream<span class="help-tip glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Stream Name of the log to be uploaded."></span></label>
+            <span class="fld-required">*</span>
+            <div class="input-control" id="fields">
+                <input autocomplete="off" class="input form-control" id="logStream1" name="logStream" type="text" placeholder="log stream" data-items="8"/><button id="b1" class="btn add-more pull-right" type="button">+</button>
+            </div>
+            <label class="input-label">Description<span class="help-tip glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Description on the Log file to be uploaded."></span></label>
+            <div class="input-control text">
+                <textarea rows="3" id="log-desc" name="description"></textarea>
+            </div>
+            <label class="input-label">Log Source<span class="File Location"></span></label>
+            <span class="fld-required">*</span>
+            <div id="source-file" class="input-control file info-state" data-role="input-control">
+                   <input type="file" id="fileInput" name="file"/>
+            </div>
+            <div class="btn-group-actions">
+                <button class="btn btn-main" type="submit" id="add-log-form">Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- /content -->
+</div>
+</div>
+<!-- /content/body -->
+</div>
+
+<script src="../../js/jquery-1.11.1.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/wso2.ml.util.js"></script>
+<script src="../../js/jquery.form.min.js"></script>
+<script src="../../js/upload.js"></script>
+</body>
+</html>

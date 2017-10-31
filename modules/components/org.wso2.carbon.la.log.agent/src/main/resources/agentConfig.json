@@ -1,0 +1,35 @@
+{
+  "agentid": "awsinstance-23",
+  "authid": "sDe334#q2",
+  "authsecret": "defr34w3qq#@Qd",
+  "output": {
+    "loganalyzer": {
+      "host": "10.100.0.88",
+      "port": 7611,
+      "user_name" : "admin",
+      "password" : "admin"
+    }
+  },
+  "groups": [
+    {
+      "name": "org.wso2.sample.logs.group.1",
+      "version": "1.0.0",
+      "config": {
+        "input": {
+          "file": {
+            "path": "/tmp/access_log",
+            "start_position": "beginning"
+          }
+        },
+        "filter": {
+          "regex": {
+            "match": [
+              "level",
+              "(INFO|DEBUG|ERROR|WARN|ALL|TRACE|OFF|FATAL)"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
